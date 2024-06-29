@@ -35,6 +35,7 @@ import com.work.weatherforecast.DialogManager
 import com.work.weatherforecast.MainViewModel
 import com.work.weatherforecast.databinding.FragmentMaineBinding
 import org.json.JSONObject
+import java.io.UnsupportedEncodingException
 
 const val API_KEY = "30de988cefc545bfa33162049242005"
 
@@ -184,11 +185,18 @@ class MainFragment : Fragment() {
         queue.add(reqvest)
     }
 
-    private fun parseWeatherData(result: String){
+    private fun parseWeatherData(fromServer: String){
+        var result = ""
+        try {
+            result = String(fromServer.toByteArray(charset("ISO-8859-1")), charset("UTF-8"))
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
         val mainObject = JSONObject(result)
         val list = parsDays(mainObject)
         parseCurrentData(mainObject, list[0])
     }
+
 
     private fun parsDays(mainObject: JSONObject): List<WeatherModel>{
         val list = ArrayList<WeatherModel>()
@@ -223,7 +231,7 @@ class MainFragment : Fragment() {
             mainObject.getJSONObject("current").getString("last_updated"),
             mainObject.getJSONObject("current")
                 .getJSONObject("condition").getString("text"),
-            mainObject.getJSONObject("current").getString("temp_c"),
+            mainObject.getJSONObject("current").getString("temp_c").toFloat().toInt().toString()+"°C",
             weatherItem.maxTemp,
             weatherItem.minTemp,
             mainObject.getJSONObject("current")
@@ -242,3 +250,4 @@ class MainFragment : Fragment() {
 
     }
 }
+

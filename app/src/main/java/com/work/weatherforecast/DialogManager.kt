@@ -11,10 +11,10 @@ object DialogManager {
         dialog.setTitle("Enable location?")
         dialog.setMessage("Location disabled, do you want enable location?")
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok"){_,_ ->
+            listener.onClick(null)
             dialog.dismiss()
         }
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel") { _, _ ->
-            listener.onClick(null)
             dialog.dismiss()
         }
         dialog.show()
@@ -27,10 +27,10 @@ object DialogManager {
         val dialog = builder.create()
         dialog.setTitle("City name:")
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok"){_,_ ->
+            listener.onClick(edName.text.toString())
             dialog.dismiss()
         }
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel") { _, _ ->
-            listener.onClick(edName.text.toString())
             dialog.dismiss()
         }
         dialog.show()
